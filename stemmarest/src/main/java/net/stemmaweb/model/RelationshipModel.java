@@ -1,5 +1,8 @@
 package net.stemmaweb.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.neo4j.graphdb.Relationship;
 
@@ -19,7 +22,7 @@ public class RelationshipModel {
         maybe,
         yes
     }
-
+    
     private String source;              // source
     private String target;              // target
     private String id;                  // id
@@ -36,7 +39,7 @@ public class RelationshipModel {
     private String scope;               // de10
     private String type;                // de11
     // TODO is witness ever used??
-    private String witness;             // de12
+    private ArrayList<String> witnesses;             // de12
 
     public RelationshipModel(){
 
@@ -92,8 +95,16 @@ public class RelationshipModel {
                 case "type":
                     type = rel.getProperty("type").toString();
                     break;
-                case "witness":
-                    witness = rel.getProperty("witness").toString();
+                case "witnesses":
+                    try {
+                        String[] witList = {};
+                        if (rel.hasProperty("witnesses"))
+                            witList = (String[]) rel.getProperty("witnesses");
+                        witnesses = new ArrayList<>(Arrays.asList(witList));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    //witnesses = rel.getProperty("witnesses");
                     break;
                 default:
                     break;
@@ -222,11 +233,11 @@ public class RelationshipModel {
         this.type = type;
     }
 
-    public String getWitness() {
-        return witness;
+    public ArrayList<String> getWitness() {
+        return witnesses;
     }
 
-    public void setWitness(String witness) {
-        this.witness = witness;
+    public void setWitness(ArrayList<String> witnesses) {
+        this.witnesses = witnesses;
     }
 }
