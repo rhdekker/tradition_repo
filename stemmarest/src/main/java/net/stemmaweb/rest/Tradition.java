@@ -1,5 +1,6 @@
 package net.stemmaweb.rest;
 
+import static java.lang.Long.parseLong;
 import java.util.*;
 
 import javax.ws.rs.*;
@@ -352,6 +353,71 @@ public class Tradition {
         return Response.ok(readingModels).build();
     }
 
+    @GET
+    @Path("/range/{start}/{end}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getRange(@PathParam("start") long startRank,
+                        @PathParam("end") long endRank) {
+        Node startNode = DatabaseService.getStartNode(traditionId, db);
+        if (startNode == null) {
+            return Response.status(Status.NOT_FOUND)
+                    .entity("Could not find tradition with this id").build();
+        }
+
+        try {
+            ArrayList<ReadingModel> readingModels =
+                    getAllReadingsFromTraditionBetweenRanks(startNode, startRank, endRank);
+            return Response.ok(readingModels).build();
+        } catch (Exception e) {
+            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    
+    @GET
+    @Path("/subgraph/{start}/{end}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSubGraph(@PathParam("start") long startRank,
+                                @PathParam("end") long endRank) {
+        startRank = 10;
+        endRank = 20;
+        Result result;
+        try (Transaction tx = db.beginTx()) {
+            result = db.execute("match (m)-[r:SEQUENCE]-(n) where m.tradition_id = \"" + traditionId + "\" and m.rank <= " + endRank + " and n.rank >= " + startRank + " and m.rank < n.rank return m, r, n");
+            
+            ArrayList<ReadingModel> readings = new ArrayList();
+            ArrayList<RelationshipModel> relationships = new ArrayList();
+            List<String> ids = new ArrayList<String>();
+            
+            while (result.hasNext()) {
+                Map<String, Object> row = result.next();
+                
+                ReadingModel m = new ReadingModel((Node)row.get("m"));
+                ReadingModel n = new ReadingModel((Node)row.get("n"));
+                Relationship r = (Relationship)row.get("r");
+                if (!ids.contains(m.getId())) {
+                    readings.add(m);
+                    ids.add(m.getId());
+                }
+                if (!ids.contains(n.getId())) {
+                    readings.add(n);
+                    ids.add(n.getId());                    
+                }
+                RelationshipModel relationship = new RelationshipModel((Relationship)row.get("r"));
+                relationships.add(relationship);
+            }
+            
+            GraphModel subgraph = new GraphModel(readings, relationships);
+            
+            tx.success();
+            return Response.ok(subgraph).build();
+            
+        } catch (Exception e) {
+            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+        }
+
+        //return Response.status(Status.OK).build();
+    }
+    
     /**
      * Get all readings which have the same text and the same rank between given
      * ranks
