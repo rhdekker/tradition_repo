@@ -20,12 +20,16 @@ import org.neo4j.graphdb.GraphDatabaseService;
 public class ApplicationConfig extends Application {
     // Get the correct path to the database location
     private static final String DB_ENV = System.getenv("DATABASE_HOME");
-    private static final String DB_PATH = DB_ENV == null ? "/var/lib/stemmarest" : DB_ENV;
+    //private static final String DB_PATH = DB_ENV == null ? "/var/lib/stemmarest" : DB_ENV;
+    private static final String DB_PATH = DB_ENV == null ? "/Users/marijnkoolen/Data/Huygens/TAG-AID/Stemmadb" : DB_ENV;
 
     @Override
     public Set<Class<?>> getClasses() {
         Set<Class<?>> s = new HashSet<>();
         s.add(Root.class);
+
+        s.add(io.swagger.jaxrs.listing.ApiListingResource.class);
+        s.add(io.swagger.jaxrs.listing.SwaggerSerializers.class);
 
         return s;
     }
