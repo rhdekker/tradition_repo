@@ -7,7 +7,10 @@
         <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>com.sun.jersey.config.property.packages</param-name>
+            <param-value>net.stemmaweb.rest;org.codehaus.jackson.jaxrs;io.swagger.jaxrs.json;io.swagger.jaxrs.listing</param-value>
+            <!--
             <param-value>net.stemmaweb.rest;org.codehaus.jackson.jaxrs</param-value>
+            -->
         </init-param>
         <init-param>
             <param-name>javax.ws.rs.Application</param-name>
@@ -17,11 +20,26 @@
             <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
             <param-value>true</param-value>
         </init-param>
-
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>Jersey Web Application</servlet-name>
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
+    <!--
+    <servlet>
+        <servlet-name>Jersey2Config</servlet-name>
+        <servlet-class>io.swagger.jaxrs.config.DefaultJaxrsConfig</servlet-class>
+        <servlet-class>io.swagger.jersey.config.JerseyJaxrsConfig</servlet-class>
+        <init-param>
+            <param-name>api.version</param-name>
+            <param-value>1.0.0</param-value>
+        </init-param>
+        <init-param>
+            <param-name>swagger.api.basepath</param-name>
+            <param-value>http://localhost:8080/stemmarest</param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    -->
 </web-app>
