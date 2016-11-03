@@ -4,6 +4,7 @@ import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
 import net.stemmaweb.model.TraditionModel;
 import net.stemmaweb.model.UserModel;
+import net.stemmaweb.model.ReadingModel;
 import net.stemmaweb.parser.CollateXParser;
 import net.stemmaweb.services.DatabaseService;
 import net.stemmaweb.services.GraphDatabaseServiceProvider;
@@ -22,6 +23,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+// Libraries for Swagger/OpenAPI documentation
+//import com.wordnik.swagger.annotations.Api;
+//import com.wordnik.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
+
+// Log4j is used for debug logging
+import org.apache.log4j.Logger;
+
 /**
  * The root of the REST hierarchy. Deals with system-wide collections of
  * objects.
@@ -29,15 +38,20 @@ import java.util.UUID;
  * @author tla
  */
 @Path("/")
+@Api(value = "/", description = "Stemmaweb REST service")
 public class Root {
     private GraphDatabaseServiceProvider dbServiceProvider = new GraphDatabaseServiceProvider();
     private GraphDatabaseService db = dbServiceProvider.getDatabase();
 
+    //final static Logger logger = Logger.getLogger(Root.class);
     /**
      * Delegated API calls
      */
 
     @Path("/tradition/{tradId}")
+    @ApiOperation(value = "/tradition/{tradId}", 
+            notes = "Specific parts (e.g. witnesses, readings) of a tradition can be requested by further specification in the URL",
+            response = Tradition.class)
     public Tradition getTradition(@PathParam("tradId") String tradId) {
         return new Tradition(tradId);
     }
@@ -173,6 +187,23 @@ public class Root {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
         return Response.ok(userList).build();
+    }
+
+    @GET
+    @Path("/readings")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllReadings() {
+        List<ReadingModel> readingList = new ArrayList<>();
+
+        try (Transaction tx = db.beginTx()) {
+
+            db.findNodes(Nodes.READING)
+                    .forEachRemaining(t -> readingList.add(new ReadingModel(t)));
+            tx.success();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+        return Response.ok(readingList).build();
     }
 
     public String createTradition(String name, String direction, String language, String isPublic) throws Exception {
