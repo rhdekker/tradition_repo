@@ -17,6 +17,7 @@ import net.stemmaweb.model.*;
 import net.stemmaweb.parser.DotParser;
 import net.stemmaweb.services.*;
 import net.stemmaweb.services.DatabaseService;
+import org.apache.log4j.Logger;
 
 import org.neo4j.graphdb.*;
 import org.neo4j.graphdb.traversal.*;
@@ -33,6 +34,8 @@ public class Tradition {
     private GraphDatabaseService db;
     private String traditionId;
 
+    final static Logger logger = Logger.getLogger(Tradition.class);
+    
     public Tradition(String requestedId) {
         GraphDatabaseServiceProvider dbServiceProvider = new GraphDatabaseServiceProvider();
         db = dbServiceProvider.getDatabase();
@@ -378,8 +381,6 @@ public class Tradition {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSubGraph(@PathParam("start") long startRank,
                                 @PathParam("end") long endRank) {
-        startRank = 10;
-        endRank = 20;
         Result result;
         try (Transaction tx = db.beginTx()) {
             result = db.execute("match (m)-[r:SEQUENCE]-(n) where m.tradition_id = \"" + traditionId + "\" and m.rank <= " + endRank + " and n.rank >= " + startRank + " and m.rank < n.rank return m, r, n");
@@ -410,6 +411,46 @@ public class Tradition {
             
             tx.success();
             return Response.ok(subgraph).build();
+            
+        } catch (Exception e) {
+            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+        }
+
+        //return Response.status(Status.OK).build();
+    }
+    
+    @GET
+    @Path("/search/{text}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSubGraph(@PathParam("text") String text) {
+        if(logger.isDebugEnabled()){
+            logger.debug("This is debug - text received is : " + text);
+        }
+        Result result;
+        try (Transaction tx = db.beginTx()) {
+            result = db.execute("match (m)-[r:SEQUENCE]-(n) where m.tradition_id = \"" + traditionId + "\" and m.text = \"" + text + "\" return m");
+            if(logger.isDebugEnabled()){
+                logger.debug("This is debug - query results received.");
+            }
+            
+            ArrayList<ReadingModel> readings = new ArrayList();
+            
+            while (result.hasNext()) {
+                Map<String, Object> row = result.next();
+                
+                if(logger.isDebugEnabled()){
+                    logger.debug("This is debug - iterating over results.");
+                }
+                ReadingModel m = new ReadingModel((Node)row.get("m"));
+                readings.add(m);
+                
+            }
+            
+            if(logger.isDebugEnabled()){
+                logger.debug("This is debug - query results parsed.");
+            }
+            tx.success();
+            return Response.ok(readings).build();
             
         } catch (Exception e) {
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
