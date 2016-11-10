@@ -19,7 +19,7 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
-            <!--
+            <!-- Used for Swagger
             <plugin>
                 <groupId>com.sebastian-daschner</groupId>
                 <artifactId>jaxrs-analyzer-maven-plugin</artifactId>
@@ -239,12 +239,12 @@
             <version>1.5.3-M1</version>
             <type>jar</type>
         </dependency>
-        -->
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-jersey2-jaxrs</artifactId>
             <version>1.5.0</version>
         </dependency>
+        -->
         
     </dependencies>
     <properties>
