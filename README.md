@@ -9,15 +9,27 @@ Stemmarest is a java application designed to improve the performance of [stemmaw
 
 git clone https://github.com/tohotforice/PSE2_DH.git
 
+This application requires graphviz and its dot parser. To install on e.g. Ubuntu, type:
+
+```
+sudo apt install graphviz
+```
+
+or apt-get for pre-16.04 versions of Ubuntu:
+
+
+
 ###Building
 ---
 - Stemmarest needs to be built using [Maven](http://maven.apache.org/run-maven/index.html#Quick_Start). This can be done using a java IDE (e.g Eclipse) and a Maven plugin
 
-
+Make sure that the library `com.alexmerz.graphviz.jar` is either part of the war file or added to the e.g. tomcat `lib/` folder.
 
 
 ###Running 
 ---
+Make sure to set the location for the neo4j database under `DATABASE_HOME` in your environment variables, or update the default location in ApplicationConfig.java.
+
 As this application represents a server side only, there is no full GUI included
 
 
