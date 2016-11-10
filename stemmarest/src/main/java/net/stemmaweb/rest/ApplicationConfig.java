@@ -20,16 +20,15 @@ import org.neo4j.graphdb.GraphDatabaseService;
 public class ApplicationConfig extends Application {
     // Get the correct path to the database location
     private static final String DB_ENV = System.getenv("DATABASE_HOME");
-    //private static final String DB_PATH = DB_ENV == null ? "/var/lib/stemmarest" : DB_ENV;
-    private static final String DB_PATH = DB_ENV == null ? "/Users/marijnkoolen/Data/Huygens/TAG-AID/Stemmadb" : DB_ENV;
-
+    private static final String DB_PATH = DB_ENV == null ? "/var/lib/stemmarest" : DB_ENV;
+    
     @Override
     public Set<Class<?>> getClasses() {
         Set<Class<?>> s = new HashSet<>();
         s.add(Root.class);
 
-        s.add(io.swagger.jaxrs.listing.ApiListingResource.class);
-        s.add(io.swagger.jaxrs.listing.SwaggerSerializers.class);
+        //s.add(io.swagger.jaxrs.listing.ApiListingResource.class);
+        //s.add(io.swagger.jaxrs.listing.SwaggerSerializers.class);
 
         return s;
     }
@@ -37,10 +36,13 @@ public class ApplicationConfig extends Application {
     @PostConstruct
     public void initializeApp()
     {
+        // This has been moved to ApplicationContextListener so that 
+        // apache tomcat properly shuts down neo4j.
+        
         // Connect to the database, create the root node if necessary, and leave.
-        GraphDatabaseService db = new GraphDatabaseServiceProvider(DB_PATH).getDatabase();
-        DatabaseService.createRootNode(db);
-        registerShutdownHook(db);
+        //GraphDatabaseService db = new GraphDatabaseServiceProvider(DB_PATH).getDatabase();
+        //DatabaseService.createRootNode(db);
+        //registerShutdownHook(db);
     }
 
     private static void registerShutdownHook( final GraphDatabaseService graphDb )
