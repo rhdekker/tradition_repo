@@ -10,3 +10,4 @@ stemmarest/stemmarest.iml
 !stemmarest/upload/notempty
 Tests/*
 **/.DS_Store
+/stemmarest/nbproject/
