@@ -26,10 +26,11 @@ import java.util.UUID;
 // Libraries for Swagger/OpenAPI documentation
 //import com.wordnik.swagger.annotations.Api;
 //import com.wordnik.swagger.annotations.ApiOperation;
-import io.swagger.annotations.*;
+//import io.swagger.annotations.*;
 
 // Log4j is used for debug logging
 import org.apache.log4j.Logger;
+//import org.glassfish.jersey.client.ClientResponse;
 
 /**
  * The root of the REST hierarchy. Deals with system-wide collections of
@@ -38,20 +39,20 @@ import org.apache.log4j.Logger;
  * @author tla
  */
 @Path("/")
-@Api(value = "/", description = "Stemmaweb REST service")
+//@Api(value = "/", description = "Stemmaweb REST service")
 public class Root {
     private GraphDatabaseServiceProvider dbServiceProvider = new GraphDatabaseServiceProvider();
     private GraphDatabaseService db = dbServiceProvider.getDatabase();
 
-    //final static Logger logger = Logger.getLogger(Root.class);
+    final static Logger logger = Logger.getLogger(Root.class);
     /**
      * Delegated API calls
      */
 
     @Path("/tradition/{tradId}")
-    @ApiOperation(value = "/tradition/{tradId}", 
-            notes = "Specific parts (e.g. witnesses, readings) of a tradition can be requested by further specification in the URL",
-            response = Tradition.class)
+    //@ApiOperation(value = "/tradition/{tradId}", 
+    //        notes = "Specific parts (e.g. witnesses, readings) of a tradition can be requested by further specification in the URL",
+    //        response = Tradition.class)
     public Tradition getTradition(@PathParam("tradId") String tradId) {
         return new Tradition(tradId);
     }
@@ -92,7 +93,7 @@ public class Root {
                                   @FormDataParam("file") InputStream uploadedInputStream,
                                   @FormDataParam("file") FormDataContentDisposition fileDetail) throws IOException,
             XMLStreamException {
-
+            
         if (!DatabaseService.userExists(userId, db)) {
             return Response.status(Response.Status.CONFLICT)
                     .entity("Error: No user with this id exists")
@@ -108,7 +109,7 @@ public class Root {
         String tradId;
         try {
             tradId = this.createTradition(name, direction, language, is_public);
-            this.linkUserToTradition(userId, tradId);
+            this.linkUserToTradition(userId, tradId);    
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(String.format("{\"error\":\"%s\"}", e.getMessage()))
@@ -136,7 +137,7 @@ public class Root {
         // from the GraphML file.
         if (filetype.equals("graphml"))
             return new GraphMLParser().parseGraphML(uploadedInputStream, userId, tradId);
-
+        
         // If we got this far, it was an unrecognized filetype.
         return Response.status(Response.Status.BAD_REQUEST).entity("Unrecognized file type " + filetype).build();
     }
