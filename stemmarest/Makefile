@@ -1,14 +1,16 @@
+initialize: deploy start
 
 remove: stop undeploy
 
 renew: stop undeploy deploy start
 
+restart: stop start
+
 undeploy:
-	-rm ~/Software/apache-tomcat-8.0.27/webapps/stemmarest.war
-	-rm -rf ~/Software/apache-tomcat-8.0.27/webapps/stemmarest/
+	-curl "http://marijn:admin@localhost:8080/manager/text/undeploy?path=/stemmarest"
 
 deploy:
-	-cp target/stemmarest.war ~/Software/apache-tomcat-8.0.27/webapps/
+	-wget "http://marijn:admin@localhost:8080/manager/text/deploy?path=/stemmarest&war=file:./target/stemmarest.war" -O - -q
 
 start:
 	~/Software/apache-tomcat-8.0.27/bin/startup.sh
@@ -16,6 +18,9 @@ start:
 stop:
 	~/Software/apache-tomcat-8.0.27/bin/shutdown.sh
 	sleep 2
+
+check:
+	ps -elf | grep java | grep -v netbeans
 
 fill_db: insert_users insert_traditions
 
