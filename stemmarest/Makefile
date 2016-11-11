@@ -6,6 +6,8 @@ renew: stop undeploy deploy start
 
 restart: stop start
 
+redeploy: undeploy deploy
+
 undeploy:
 	-curl "http://marijn:admin@localhost:8080/manager/text/undeploy?path=/stemmarest"
 
