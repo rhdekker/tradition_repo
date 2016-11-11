@@ -42,6 +42,13 @@ It is possible though to test it by using the test interface testGui.html which 
 
 **A word about node id's:** when a graph is being imported each node gets from Neo4j a unique id-number. In order to use an id in an API call (e.g. reading-id) it is necessary to explicitly get it from the data base. This can be done by using the _getAllReadings_ method (*getallreadings/fromtradition/{traditionId}*) or by actually going into the data base (see _Neo4j visualization_ in section Database)
 
+
+###Deploying with Maven on Apache Tomcat
+
+The WAR file is bigger than the default war size limit of 50Mb of Tomcat. You can increase the size limit in `conf/tomcat-users.xml` in the Tomcat directory.
+
+Use `mvn tomcat7:deploy` to deploy to your tomcat server. In case you already have a version deployed, use redeploy: `mvn tomcat7:redeploy`
+
 ###Database
 ---
 - The application's database is located in the database folder in stemmarest. It can be reset anytime by simply deleting this folder
