@@ -20,7 +20,7 @@ import org.neo4j.graphdb.GraphDatabaseService;
 public class ApplicationConfig extends Application {
     // Get the correct path to the database location
     private static final String DB_ENV = System.getenv("DATABASE_HOME");
-    private static final String DB_PATH = DB_ENV == null ? "/var/lib/stemmarest" : DB_ENV;
+    private static final String DB_PATH = DB_ENV == null ? "/home/tagaid/stemmarest/neo4jdb" : DB_ENV;
     
     @Override
     public Set<Class<?>> getClasses() {
