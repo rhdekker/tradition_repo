@@ -26,8 +26,7 @@
                 <configuration>
                     <url>http://localhost:8080/manager/text</url>  
                     <server>UnixTomcatServer</server>
-                    <path>/stemmarest</path>
-                    
+                    <path>/stemmarest</path>                    
                 </configuration>
             </plugin>
             <!-- Used for Swagger
