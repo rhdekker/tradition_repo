@@ -198,8 +198,10 @@
             <groupId>com.alexmerz</groupId>
             <artifactId>graphviz</artifactId>
             <version>0.8.6</version>
+            <!--
             <scope>system</scope>
             <systemPath>${basedir}/lib/com.alexmerz.graphviz.jar</systemPath>
+            -->
         </dependency>
         <dependency>
             <groupId>org.checkerframework</groupId>
@@ -255,7 +257,18 @@
             <version>1.5.0</version>
         </dependency>
         -->
-        
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-servlet_3.0_spec</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
     <properties>
         <powermock.version>1.6.1</powermock.version>
