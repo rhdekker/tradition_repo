@@ -35,3 +35,4 @@ insert_traditions:
 	curl -v -XPUT -F filetype=graphml -F name=Tradition -F direction=LR -F userId=1 -F "file=@src/TestFiles/testTradition.xml" localhost:8080/stemmarest/tradition
 	curl -v -XPUT -F filetype=graphml -F name=Tradition -F direction=LR -F userId=1 -F "file=@src/TestFiles/Sapientia.xml" localhost:8080/stemmarest/tradition
 	curl -v -XPUT -F filetype=graphml -F name=Tradition -F direction=LR -F userId=1 -F "file=@src/TestFiles/john.xml" localhost:8080/stemmarest/tradition
+
