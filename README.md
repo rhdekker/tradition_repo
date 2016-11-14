@@ -25,6 +25,10 @@ or apt-get for pre-16.04 versions of Ubuntu:
 
 Make sure that the library `com.alexmerz.graphviz.jar` is either part of the war file or added to the e.g. tomcat `lib/` folder.
 
+Install the graphviz jar to your local repository:
+```
+mvn install:install-file -Dfile=stemmarest/lib/com.alexmerz.graphviz.jar -DgroupId=com.alexmerz -DartifactId=graphviz -Dversion=0.8.6 -Dpackaging=jar -DlocalRepository=<path-to-local-repo>
+```
 
 ###Running 
 ---
