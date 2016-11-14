@@ -237,12 +237,14 @@
             </exclusions>
         </dependency>
         <!-- Log4j is used for logging debug info -->
+        <!--
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
             <type>jar</type>
         </dependency>
+        -->
         <!-- The following are used for API documentation -->
         <!--
         <dependency>
