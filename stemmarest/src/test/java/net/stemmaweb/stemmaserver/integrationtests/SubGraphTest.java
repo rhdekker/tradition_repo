@@ -43,7 +43,6 @@ import com.sun.jersey.test.framework.JerseyTest;
 import static java.lang.Long.parseLong;
 import java.util.concurrent.ThreadLocalRandom;
 import net.stemmaweb.model.GraphModel;
-import org.apache.log4j.Logger;
 import org.neo4j.graphdb.traversal.Evaluation;
 import org.neo4j.graphdb.traversal.Evaluator;
 import org.neo4j.graphdb.traversal.Uniqueness;
@@ -61,8 +60,6 @@ public class SubGraphTest {
 
     private GraphDatabaseService db;
 
-    final static Logger logger = Logger.getLogger(SubGraphTest.class);
-    
     /*
      * JerseyTest is the test environment to Test api calls it provides a
      * grizzly http service

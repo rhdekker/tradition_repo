@@ -28,9 +28,6 @@ import java.util.UUID;
 //import com.wordnik.swagger.annotations.ApiOperation;
 //import io.swagger.annotations.*;
 
-// Log4j is used for debug logging
-import org.apache.log4j.Logger;
-//import org.glassfish.jersey.client.ClientResponse;
 
 /**
  * The root of the REST hierarchy. Deals with system-wide collections of
@@ -44,7 +41,6 @@ public class Root {
     private GraphDatabaseServiceProvider dbServiceProvider = new GraphDatabaseServiceProvider();
     private GraphDatabaseService db = dbServiceProvider.getDatabase();
 
-    final static Logger logger = Logger.getLogger(Root.class);
     /**
      * Delegated API calls
      */

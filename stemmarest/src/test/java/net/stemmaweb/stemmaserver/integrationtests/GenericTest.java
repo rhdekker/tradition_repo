@@ -26,7 +26,6 @@ import org.neo4j.graphdb.*;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.test.framework.JerseyTest;
-import org.apache.log4j.Logger;
 import org.neo4j.test.TestGraphDatabaseFactory;
 
 import static org.junit.Assert.*;
@@ -39,7 +38,6 @@ import static org.junit.Assert.*;
 public class GenericTest {
 
     private GraphDatabaseService db;
-    final static Logger logger = Logger.getLogger(GenericTest.class);
 
     /*
      * JerseyTest is the test environment to Test api calls it provides a

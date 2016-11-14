@@ -15,8 +15,6 @@ import javax.servlet.ServletContextListener;
 import net.stemmaweb.services.DatabaseService;
 import net.stemmaweb.services.GraphDatabaseServiceProvider;
 
-import org.apache.log4j.Logger;
-
 import org.neo4j.graphdb.GraphDatabaseService;
 
 /**
@@ -25,34 +23,31 @@ import org.neo4j.graphdb.GraphDatabaseService;
  */
 public class ApplicationContextListener implements ServletContextListener {
     
-    private static final String DB_ENV = System.getenv("DATABASE_HOME");
-    private static final String DB_PATH = DB_ENV == null ? "/var/lib/stemmarest" : DB_ENV;
-    final static Logger logger = Logger.getLogger(ApplicationContextListener.class);
+    //private static final String DB_ENV = System.getenv("DATABASE_HOME");
+    //private static final String DB_PATH = DB_ENV == null ? "/var/lib/stemmarest" : DB_ENV;
+    private static final String DB_PATH = "/data/tagaid/neo4jdb";
+    
     private ServletContext context = null;
     
+    
+    public void contextInitialized(ServletContextEvent event) {
+        this.context = event.getServletContext();
+        //Output a simple message to the server's console
+        GraphDatabaseService db = new GraphDatabaseServiceProvider(DB_PATH).getDatabase();
+        DatabaseService.createRootNode(db);    
+    }
+
     public void contextDestroyed(ServletContextEvent event) {
         //Output a simple message to the server's console
         try {
             GraphDatabaseService db = new GraphDatabaseServiceProvider().getDatabase();
-            db.shutdown();
-            logger.debug("This is debug: db shut down properly");
+            if (db != null) {
+                db.shutdown();
+            }
         } catch (Exception e) {
-            logger.debug("This is debug: shut down error");
-            logger.error("failed!", e);
             e.printStackTrace();
         }
         this.context = null;
     }
-    
-  public void contextInitialized(ServletContextEvent event) {
-        this.context = event.getServletContext();
-        //Output a simple message to the server's console
-        logger.debug("This is debug - Listener: context initialized");
-        GraphDatabaseService db = new GraphDatabaseServiceProvider(DB_PATH).getDatabase();
-        DatabaseService.createRootNode(db);
-        
-        
-    }
-
     
 }
