@@ -379,6 +379,7 @@ public class Tradition {
     public Response getSubGraph(@PathParam("start") long startRank,
                                 @PathParam("end") long endRank) {
         Result result;
+        System.out.println("checking output of subgraph request");
         try (Transaction tx = db.beginTx()) {
             result = db.execute("match (m)-[r:SEQUENCE]-(n) where m.tradition_id = \"" + traditionId + "\" and m.rank <= " + endRank + " and n.rank >= " + startRank + " and m.rank < n.rank return m, r, n");
             
@@ -391,7 +392,6 @@ public class Tradition {
                 
                 ReadingModel m = new ReadingModel((Node)row.get("m"));
                 ReadingModel n = new ReadingModel((Node)row.get("n"));
-                Relationship r = (Relationship)row.get("r");
                 if (!ids.contains(m.getId())) {
                     readings.add(m);
                     ids.add(m.getId());
