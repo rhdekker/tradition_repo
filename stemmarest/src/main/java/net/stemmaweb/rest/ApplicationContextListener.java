@@ -15,7 +15,6 @@ import javax.servlet.ServletContextListener;
 
 import net.stemmaweb.services.DatabaseService;
 import net.stemmaweb.services.GraphDatabaseServiceProvider;
-import net.stemmaweb.services.JVMHelper;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -56,7 +55,7 @@ public class ApplicationContextListener implements ServletContextListener {
                 //TimeUnit.SECONDS.sleep(5);
                 // shutdown remaining threadLocals
                 //System.out.println("Tagaid - Stemmarest application - Step 4/4: Immolating ThreadLocals");
-                JVMHelper.immolativeShutdown();
+                //JVMHelper.immolativeShutdown();
                 System.out.println("Tagaid - Stemmarest application - Neo4j shutdown finished!");
                 
             }

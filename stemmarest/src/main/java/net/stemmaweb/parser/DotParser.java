@@ -6,11 +6,12 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.alexmerz.graphviz.ParseException;
-import com.alexmerz.graphviz.objects.*;
+import com.alexmerz.graphviz.Parser;
+import com.alexmerz.graphviz.objects.Edge;
+import com.alexmerz.graphviz.objects.Graph;
 import net.stemmaweb.rest.ERelations;
 import net.stemmaweb.rest.Nodes;
 
-import com.alexmerz.graphviz.Parser;
 
 import net.stemmaweb.services.DatabaseService;
 import net.stemmaweb.services.GraphDatabaseServiceProvider;
