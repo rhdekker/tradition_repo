@@ -16,7 +16,6 @@ import net.stemmaweb.services.GraphDatabaseServiceProvider;
 import net.stemmaweb.exporter.DotExporter;
 
 import org.codehaus.jettison.json.JSONObject;
-import org.neo4j.cypher.internal.compiler.v2_0.functions.Str;
 import org.neo4j.graphdb.*;
 
 /**
